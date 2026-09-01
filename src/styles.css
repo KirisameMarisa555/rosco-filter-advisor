@@ -42,6 +42,7 @@ button svg { display: block; width: 20px; height: 20px; fill: none; stroke: curr
 .back-button { display: inline-flex; align-items: center; gap: 7px; min-height: 40px; border: 1px solid var(--control-line); border-radius: 8px; padding: 8px 12px 8px 9px; color: var(--accent-strong); background: var(--control); font-weight: 700; }
 .back-button svg { width: 18px; height: 18px; }
 .app-shell { min-height: 100vh; padding: 24px; color: var(--ink); background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 8%, transparent), transparent 320px), var(--surface); }
+.app-shell[data-display-mode="standalone"] { min-height: 100dvh; }
 .app-shell[data-theme="studio"] {
   --ink: #241d17;
   --muted: #73685d;
@@ -206,6 +207,7 @@ h3 { margin: 0; color: var(--ink); font-size: 1.04rem; letter-spacing: 0; }
 
 @media (max-width: 680px) {
   .app-shell { padding: 12px; }
+  .app-shell[data-display-mode="standalone"] { padding-top: calc(12px + env(safe-area-inset-top, 0px) + 18px); }
   .rosco-layout { gap: 16px; }
   .topbar { gap: 12px; margin-bottom: 6px; }
   .language-selector { width: 100%; min-width: 0; }
@@ -235,6 +237,7 @@ h3 { margin: 0; color: var(--ink); font-size: 1.04rem; letter-spacing: 0; }
 
 @media (max-width: 420px) {
   .app-shell { padding: 10px; }
+  .app-shell[data-display-mode="standalone"] { padding-top: calc(10px + env(safe-area-inset-top, 0px) + 18px); }
   h1 { font-size: 1.48rem; }
   h2 { font-size: 1rem; }
   h3 { font-size: 0.98rem; }

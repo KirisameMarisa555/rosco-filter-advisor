@@ -21,6 +21,7 @@ function App() {
   const [originalKelvin, setOriginalKelvin] = useState(5500);
   const [convertedKelvin, setConvertedKelvin] = useState(3200);
   const [allowStacking, setAllowStacking] = useState(false);
+  const isStandalonePWA = useStandalonePWA();
   const t = translations[language];
   const originalMired = kelvinToMired(originalKelvin);
   const convertedMired = kelvinToMired(convertedKelvin);
@@ -43,6 +44,7 @@ function App() {
         setLanguage={setLanguage}
         themeId={themeId}
         setThemeId={setThemeId}
+        isStandalonePWA={isStandalonePWA}
         t={t}
         onBack={() => setSettingsOpen(false)}
       />
@@ -50,7 +52,7 @@ function App() {
   }
 
   return (
-    <main className="app-shell" data-theme={themeId}>
+    <main className="app-shell" data-theme={themeId} data-display-mode={isStandalonePWA ? 'standalone' : 'browser'}>
       <section className="rosco-layout">
         <header className="topbar">
           <div>
@@ -117,9 +119,9 @@ function PWAInstallPrompt() {
   );
 }
 
-function SettingsView({ language, setLanguage, themeId, setThemeId, t, onBack }) {
+function SettingsView({ language, setLanguage, themeId, setThemeId, isStandalonePWA, t, onBack }) {
   return (
-    <main className="app-shell" data-theme={themeId}>
+    <main className="app-shell" data-theme={themeId} data-display-mode={isStandalonePWA ? 'standalone' : 'browser'}>
       <section className="rosco-layout settings-layout">
         <header className="topbar">
           <div>
@@ -149,6 +151,30 @@ function SettingsView({ language, setLanguage, themeId, setThemeId, t, onBack })
       </section>
     </main>
   );
+}
+
+function useStandalonePWA() {
+  const [isStandalone, setStandalone] = useState(getStandalonePWAStatus);
+
+  useEffect(() => {
+    const queries = [
+      window.matchMedia('(display-mode: standalone)'),
+      window.matchMedia('(display-mode: fullscreen)'),
+      window.matchMedia('(display-mode: minimal-ui)'),
+    ];
+    const updateStatus = () => setStandalone(getStandalonePWAStatus());
+
+    queries.forEach((query) => query.addEventListener('change', updateStatus));
+    window.addEventListener('pageshow', updateStatus);
+    updateStatus();
+
+    return () => {
+      queries.forEach((query) => query.removeEventListener('change', updateStatus));
+      window.removeEventListener('pageshow', updateStatus);
+    };
+  }, []);
+
+  return isStandalone;
 }
 
 function LanguageSelector({ language, setLanguage, label }) {
@@ -406,6 +432,15 @@ function saveStoredValue(key, value) {
   } catch {
     // Local storage can be unavailable in strict privacy modes.
   }
+}
+
+function getStandalonePWAStatus() {
+  return (
+    window.matchMedia('(display-mode: standalone)').matches ||
+    window.matchMedia('(display-mode: fullscreen)').matches ||
+    window.matchMedia('(display-mode: minimal-ui)').matches ||
+    window.navigator.standalone === true
+  );
 }
 
 function GearIcon() {
