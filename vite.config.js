@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
+  base: '/rosco-filter-advisor/',
   plugins: [
     react(),
     VitePWA({
@@ -18,8 +19,8 @@ export default defineConfig({
         background_color: '#f7f8fb',
         display: 'standalone',
         orientation: 'portrait-primary',
-        scope: '/',
-        start_url: '/',
+        scope: '/rosco-filter-advisor/',
+        start_url: '/rosco-filter-advisor/',
         icons: [
           {
             src: 'pwa-192.png',
