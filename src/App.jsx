@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import * as Slider from '@radix-ui/react-slider';
 import { roscoFilters } from './data/roscoFilters.js';
 import { languages, translations } from './i18n.js';
@@ -28,6 +28,7 @@ function App() {
   const recommendations = useMemo(() => findRoscoRecommendations(miredShift, allowStacking), [miredShift, allowStacking]);
 
   useEffect(() => {
+    document.documentElement.lang = language;
     saveStoredValue(LANGUAGE_STORAGE_KEY, language);
   }, [language]);
 
@@ -93,7 +94,26 @@ function App() {
           </div>
         </section>
       </section>
+      <PWAInstallPrompt />
     </main>
+  );
+}
+
+function PWAInstallPrompt() {
+  const installRef = useRef(null);
+
+  useEffect(() => {
+    if (installRef.current) {
+      installRef.current.styles = { '--tint-color': '#156f86' };
+    }
+  }, []);
+
+  return (
+    <pwa-install
+      ref={installRef}
+      use-local-storage
+      manifest-url={`${import.meta.env.BASE_URL}manifest.webmanifest`}
+    ></pwa-install>
   );
 }
 

@@ -9,6 +9,7 @@
     "preview": "vite preview --host 127.0.0.1"
   },
   "dependencies": {
+    "@khmyznikov/pwa-install": "^0.6.4",
     "@radix-ui/react-slider": "^1.4.7",
     "@vitejs/plugin-react": "^5.0.0",
     "react": "^19.1.1",

@@ -11,6 +11,7 @@ export default defineConfig({
       injectRegister: false,
       includeAssets: ['favicon.svg', 'apple-touch-icon.png', 'pwa-192.png', 'pwa-512.png'],
       manifest: {
+        id: '/rosco-filter-advisor/',
         name: 'Rosco 色片建议 / Rosco Filter Advisor',
         short_name: 'Rosco Advisor',
         description: 'Rosco 色片建议工具，支持 Mired Shift 计算、色片推荐、桌面安装和离线使用。',
